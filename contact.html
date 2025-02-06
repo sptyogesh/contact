@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: rgb(1,0,128);
+            font-weight: bold;
+            padding: 50px 0;
+            text-align: center;
+        }
+        section{
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h2 {
+            color: white;
+            margin-bottom: 20px;
+        }
+        p {
+            color: white;
+            margin-bottom: 30px;
+        }
+        form {
+            background-color: rgb(199, 196, 196);
+            padding: 50px;
+            border-radius: 20px;
+            -webkit-box-shadow: 14.5px 14px 9.5px 0 #000000;
+            -moz-box-shadow: 14.5px 14px 9.5px 0 #000000;
+            box-shadow: 14.5px 14px 9.5px 0 #000000;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #070707;
+            text-align: start;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #138708;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <section>
+            <h2>Contact Us</h2>
+            <p>Feel free to get in touch with us using the form below or via the contact information provided.</p>
+            <form id="contactForm" action="submit.html" onsubmit="sendEmail(event)">
+                <label>Name:</label>
+                <input type="text" id="name" name="name" required>
+                <label>Email:</label>
+                <input type="email" id="email" name="email" required>
+                <label>Message:</label>
+                <textarea id="message" name="message" rows="4" required></textarea>
+                <button type="submit">Send Message</button>
+            </form>
+    </section>
+    <script>
+        function sendEmail(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const jsonData = {};
+            formData.forEach((value, key) => {
+                jsonData[key] = value;
+            });
+            fetch('https://formspree.io/f/xoqgrdbo', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(jsonData),
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = './submit.html';
+                } else {
+                    throw new Error('Failed to send message');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
